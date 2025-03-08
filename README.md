@@ -1,7 +1,7 @@
 
 # 💻 SERVER-SIDE LANGUAGES - ONLINE
 
-# Project Name: ??
+# Assignment Name: 1.5 - NodeJS Coding Assignment
 
 ### Jhonn S Alvarez Molina
 
