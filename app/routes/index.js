@@ -3,6 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
+//FS file system to store data
 const dataPath = path.join(__dirname, '../data.json');
 
 const readDataFromFile = () => {
