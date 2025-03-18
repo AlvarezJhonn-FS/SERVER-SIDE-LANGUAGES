@@ -5,7 +5,6 @@ const carSchema = new mongoose.Schema({
     make: {
         type: String,
         required: [true, 'Please provide a make'],
-        unique: [true, 'Make already exists'],
         trim: true
     },
     //test
