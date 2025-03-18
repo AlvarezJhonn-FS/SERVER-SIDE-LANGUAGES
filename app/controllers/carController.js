@@ -17,18 +17,25 @@ const createCar = async (req, res) => {
 };
 
 const getCarId = async (req, res) => {
-  try{
-    const car = await Car.findById(req.params.id);
+    try {
+      const car = await Car.findById(req.params.id);
+      
       if (!car) {
-          res.status(404).json({ success: false, message: "Car not found" });
+        return res.status(404).json({ success: false, message: "Car not found" });
       }
-      res.status(200).json({ "data": car, success: true, message: `${req.method} - REQUEST MADE` });
 
-      }
-    catch (error) {
-    res.status(404).json({ success: false, message: "Car not found" });
-  }
-};
+      return res.status(200).json({
+        data: car,
+        success: true,
+        message: `${req.method} - REQUEST MADE`
+      });
+  
+    } catch (error) {
+
+      return res.status(500).json({ success: false, message: "Server error", error: error.message });
+    }
+  };
+  
 
 const getCar = async (req, res) => {
     try {
