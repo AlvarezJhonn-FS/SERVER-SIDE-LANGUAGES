@@ -7,7 +7,6 @@ const carSchema = new mongoose.Schema({
         required: [true, 'Please provide a make'],
         trim: true
     },
-    //test
     model: {
         type: String,
         required: [true, 'Please provide a model'],
