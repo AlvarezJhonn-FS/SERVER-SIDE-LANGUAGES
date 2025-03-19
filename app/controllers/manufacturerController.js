@@ -1,5 +1,6 @@
 const Manufacturer = require('../models/manufacturer');
 const Car = require('../models/cars');
+const message = require('../messages/messages') 
 
 const createManufacturer = async (req, res) => {
   try {
@@ -10,7 +11,7 @@ const createManufacturer = async (req, res) => {
 
     res.status(200).json({
       data: manufacturerData,
-      message: `${req.method} - Manufacturer created successfully`,
+      message: `${req.method} - ${messages.MANUFACTURER_CREATED}`, 
       success: true
     });
   } catch (error) {
@@ -24,30 +25,37 @@ const createManufacturer = async (req, res) => {
 
 const getManufacturerById = async (req, res) => {
   try {
-    const manufacturer = await Manufacturer.findById(req.params.id);
+    const manufacturer = await Manufacturer.findById(req.params.id)
+      .populate('cars', '_id')
+      .select('-__v');
+
     if (!manufacturer) {
-      return res.status(404).json({ success: false, message: "Manufacturer not found" });
+      return res.status(404).json({ success: false, message: messages.MANUFACTURER_NOT_FOUND }); 
     }
+
     res.status(200).json({
       data: manufacturer,
       success: true,
       message: `${req.method} - Manufacturer fetched`
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error fetching manufacturer" });
+    res.status(500).json({ success: false, message: messages.ERROR });
   }
 };
 
 const getManufacturers = async (req, res) => {
   try {
-    const manufacturers = await Manufacturer.find({});
+    const manufacturers = await Manufacturer.find({})
+      .populate('_id') 
+      .select('-__v');
+
     res.status(200).json({
       data: manufacturers,
       success: true,
       message: `${req.method} - Manufacturers fetched`
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error fetching manufacturers" });
+    res.status(500).json({ success: false, message: messages.ERROR });
   }
 };
 
@@ -60,16 +68,16 @@ const updateManufacturer = async (req, res) => {
     );
 
     if (!updatedManufacturer) {
-      return res.status(404).json({ success: false, message: "Manufacturer not found" });
+      return res.status(404).json({ success: false, message: messages.MANUFACTURER_NOT_FOUND }); 
     }
 
     res.status(200).json({
       data: updatedManufacturer,
       success: true,
-      message: "Manufacturer updated"
+      message: messages.MANUFACTURER_UPDATED 
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error updating manufacturer" });
+    res.status(500).json({ success: false, message: messages.ERROR });
   }
 };
 
@@ -78,16 +86,16 @@ const deleteManufacturer = async (req, res) => {
     const deletedManufacturer = await Manufacturer.findByIdAndDelete(req.params.id);
 
     if (!deletedManufacturer) {
-      return res.status(404).json({ success: false, message: "Manufacturer not found" });
+      return res.status(404).json({ success: false, message: messages.MANUFACTURER_NOT_FOUND }); 
     }
 
     res.status(200).json({
       data: deletedManufacturer,
       success: true,
-      message: "Manufacturer deleted"
+      message: messages.MANUFACTURER_DELETED
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error deleting manufacturer" });
+    res.status(500).json({ success: false, message: messages.ERROR });
   }
 };
 
