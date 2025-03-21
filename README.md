@@ -1,85 +1,95 @@
+# Geospatial Data API
 
-# 💻 SERVER-SIDE LANGUAGES - ONLINE
+This application integrates with the OpenWeatherMap API to fetch weather data based on latitude and longitude, and stores this data in a MongoDB database. It provides RESTful endpoints to manage and retrieve geospatial data.
 
-# Assignment Name: Main Branch
+## Features
 
-### Jhonn S Alvarez Molina
+- Fetches weather data from the OpenWeatherMap API.
+- Stores geospatial data (latitude, longitude, weather details) in MongoDB.
+- Provides RESTful API endpoints for:
+  - Creating new geospatial data entries.
+  - Retrieving all geospatial data entries.
+  - Retrieving a specific geospatial data entry by ID.
+  - Updating an existing geospatial data entry by ID.
+  - Deleting a geospatial data entry by ID.
+  - Fetching fresh weather data without database interaction.
 
-🆔 &nbsp; 0005240748
+## Prerequisites
 
-📪 &nbsp; jsalvarezmolina@student.fullsail.edu
+- Node.js and npm installed.
+- MongoDB installed and running.
+- An API key from OpenWeatherMap (sign up at [OpenWeatherMap](https://openweathermap.org/)).
 
+## Installation
 
-![Degree Program](https://img.shields.io/badge/Degree-Web%20Development-orange?logo=gnometerminal)
-<br>
+1.  Clone the repository:
 
+2.  Install dependencies:
 
+3.  Create a `.env` file in the root directory and add your MongoDB connection string and OpenWeatherMap API key:
 
-<br>
+4.  Start the application:
 
-## 📢 &nbsp; Weekly Check-Ins
+## API Endpoints
 
-Each week I will summarize my activity and progress by writing a stand-up. A stand-up is meant to be a succinct update on how things are going.  
-Use the prompts below as a guide on what to write about.      
+- **POST /api/geo-data** = Example : http://localhost:3000/api/geo-data
+  - Description: Creates a new geospatial data entry.
+  - Request body:
+    ```json
+    {
+      "latitude": 40.7128,
+      "longitude": -74.006
+    }
+    ```
+  - Response: Success message and the saved document's ID.
+- **GET /api/geo-data** Example : http://localhost:3000/api/geo-data
+  - Description: Retrieves all stored geospatial data entries.
+  - Response: Array of geospatial data entries.
 
-⚙️ Overview - What I worked on this past week
-<br>
-🌵 Challenges - What problems did I have & how I'm addressing them
-<br>
-🏆 Accomplishments - What is something I "leveled up" on this week
-<br>
-🔮 Next Steps - What I plan to prioritize and do next
+- **GET /api/geo-data/:id** Example : http://localhost:3000/geoData/67dc9bba1e618f7f35764727
+  - Description: Retrieves a specific geospatial data entry by its MongoDB ID.
+  - Response: The requested geospatial data entry.
 
-<br>
+- **PUT /api/geo-data/:id** Example : http://localhost:3000/geoData/67dc9bba1e618f7f35764727
+  - Description: Updates a specific geospatial data entry by its MongoDB ID.
+  - Request body:
+    ```json
+    {
+      "latitude": 41.0,
+      "longitude": -73.0
+    }
+    ```
+  - Response: Success message and the updated geospatial data entry.
 
-### Week 1
+- **DELETE /api/geo-data/:id** Example : http://localhost:3000/geoData/67dc9d733b52d39af42d88b0
+  - Description: Deletes a specific geospatial data entry by its MongoDB ID.
+  - Response: Success message and the deleted geospatial data entry.
 
-⚙️ Overview - This week, I focused on implementing a simple RESTful API using Node.js, Express, and Postman for testing. The goal was to develop the basic CRUD operations (Create, Read, Update, Delete) and persist data in a JSON file using the file system (fs module). My work mainly involved:
+- **GET /api/geo-data/weather?latitude=:lat&longitude=:lon** Example : http://localhost:3000/api/geo-data/fetch?latitude=37.7749&longitude=-122.4194
+  - Description: Fetches fresh weather data from OpenWeatherMap API.
+  - Query parameters:
+    - `latitude`: Latitude of the location.
+    - `longitude`: Longitude of the location.
+  - Response: Weather data.
 
-Setting up routes to handle POST, GET, PUT, and DELETE requests.
-Using the fs module to read and write data to a local JSON file.
-Handling edge cases, such as trying to access or modify data that doesn’t exist.
-I also spent time testing the API with Postman to ensure everything was functioning correctly.
+## MongoDB Schema
 
-<br>
-🌵 Challenges - I initially faced challenges with data persistence in the JSON file. Since the app was supposed to store data locally and I was using the fs module to read and write, I encountered issues where the data wasn’t being saved correctly after modifications.
-<br>
-🏆 Accomplishments - I leveled up my understanding of using the fs module to read, write, and update data in files asynchronously, which is an essential skill for backend development when dealing with persistent data storage.
-<br>
-🔮 Next Steps - I plan to add more validation to the data input and improve the error handling for different scenarios (e.g., missing fields or invalid data types). This will make the API more user-friendly and less prone to errors
+- `latitude`: Number (required)
+- `longitude`: Number (required)
+- `createdAt`: Date (default: current date and time)
 
-<br>
+## API Documentation
 
-### Week 2
-⚙️ Overview - Write overview here.
-<br>
-🌵 Challenges - Write challenges here.
-<br>
-🏆 Accomplishments - Write Accomplishments here.
-<br>
-🔮 Next Steps - Write your next steps here.
+- OpenWeatherMap API: [https://openweathermap.org/api](https://openweathermap.org/api)
 
-<br>
+## Error Handling
 
-### Week 3
-⚙️ Overview - Write overview here.
-<br>
-🌵 Challenges - Write challenges here.
-<br>
-🏆 Accomplishments - Write Accomplishments here.
-<br>
-🔮 Next Steps - Write your next steps here.
+The application includes error handling for API calls and database operations. Appropriate HTTP status codes and error messages are returned in case of failures.
 
-<br>
+## Code Structure
 
-### Week 4
-⚙️ Overview - Write overview here.
-<br>
-🌵 Challenges - Write challenges here.
-<br>
-🏆 Accomplishments - Write Accomplishments here.
-<br>
-🔮 Next Steps - Write your next steps here.
-
-<br>
-<hr/>
+- `server.js`: Main application file.
+- `routes/geoData.js`: Route definitions.
+- `controllers/geoDataController.js`: Controller functions.
+- `models/geoData.js`: MongoDB schema definition.
+- `config/.env`: Configuration file (database connection, API key).
