@@ -22,13 +22,14 @@ const postGeoData = async (req, res) => {
     const weatherInfo = {
       temperature: weatherData.main.temp,
       humidity: weatherData.main.humidity,
-      visibility: weatherData.visibility,
+      visibility: weatherData.visibility
     };
 
+    // Store weather as an object, not string
     const newGeoData = await GeoData.create({
       latitude,
       longitude,
-      weather: JSON.stringify(weatherInfo),
+      weather: weatherInfo
     });
 
     res.status(200).json({
@@ -37,6 +38,7 @@ const postGeoData = async (req, res) => {
       success: true,
     });
   } catch (error) {
+    console.error('Error in postGeoData:', error);  // Log full error
     res.status(500).json({
       message: 'Server Error',
       error: error.message,
@@ -44,6 +46,7 @@ const postGeoData = async (req, res) => {
     });
   }
 };
+
 
 // GET - Retrieve all GeoData from MongoDB
 const getGeoData = async (req, res) => {
