@@ -23,8 +23,28 @@ This application integrates with the OpenWeatherMap API to fetch weather data ba
 ## Installation
 
 1.  Clone the repository:
+ ```bash
+    git clone https://github.com/AlvarezJhonn-FS/SERVER-SIDE-LANGUAGES/tree/3.3---Geospatial-Data-API
+    ```
 
 2.  Install dependencies:
+### Dependencies
+```bash
+
+* **axios:** `^1.8.4` - Promise based HTTP client for the browser and node.js.
+* **dotenv:** `^16.4.7` - Loads environment variables from a `.env` file.
+* **express:** `^4.21.2` - Fast, unopinionated, minimalist web framework for Node.js.
+* **mongoose:** `^8.12.1` - Elegant MongoDB object modeling for Node.js.
+* **morgan:** `^1.10.0` - HTTP request logger middleware for Node.js.
+```
+### Dev Dependencies
+
+* **nodemon:** `^3.1.9` - Automatically restarts the node application when file changes in the directory are detected.
+
+## Scripts
+
+* **`npm start`:** Starts the server in production mode.
+* **`npm run dev`:** Starts the server in development mode using nodemon.
 
 3.  Create a `.env` file in the root directory and add your MongoDB connection string and OpenWeatherMap API key:
 
