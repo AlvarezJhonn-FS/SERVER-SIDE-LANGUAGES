@@ -45,19 +45,30 @@ const getManufacturerById = async (req, res) => {
 
 const getManufacturers = async (req, res) => {
   try {
-    const manufacturers = await Manufacturer.find({})
-      .populate('_id') 
-      .select('-__v');
+    const { minCars, maxCars, name } = req.query;
+    
+    let filter = {};
+    
+    if (minCars) filter.carsCount = { $gte: parseInt(minCars) };
+    if (maxCars) filter.carsCount = { ...filter.carsCount, $lte: parseInt(maxCars) };
+    if (name) filter.name = { $regex: name, $options: 'i' }; // Case-insensitive search
+
+    const manufacturers = await Manufacturer.find(filter)
+      .select(req.query.excludeFields ? `-${req.query.excludeFields}` : '-__v')
+      .sort(req.query.sortBy ? req.query.sortBy : 'name') // Default sort by 'name'
+      .skip(parseInt(req.query.skip) || 0)
+      .limit(parseInt(req.query.limit) || 10);
 
     res.status(200).json({
       data: manufacturers,
       success: true,
-      message: `${req.method} - Manufacturers fetched`
+      message: 'Manufacturers fetched successfully'
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: messages.ERROR });
+    res.status(500).json({ success: false, message: 'Error fetching manufacturers', error: error.message });
   }
 };
+
 
 const updateManufacturer = async (req, res) => {
   try {
