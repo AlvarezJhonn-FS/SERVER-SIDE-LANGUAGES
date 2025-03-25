@@ -22,7 +22,7 @@ const createManufacturer = async (req, res) => {
     });
   }
 };
-
+ 
 const getManufacturerById = async (req, res) => {
   try {
     const manufacturer = await Manufacturer.findById(req.params.id)
@@ -51,11 +51,11 @@ const getManufacturers = async (req, res) => {
     
     if (minCars) filter.carsCount = { $gte: parseInt(minCars) };
     if (maxCars) filter.carsCount = { ...filter.carsCount, $lte: parseInt(maxCars) };
-    if (name) filter.name = { $regex: name, $options: 'i' }; // Case-insensitive search
+    if (name) filter.name = { $regex: name, $options: 'i' };
 
     const manufacturers = await Manufacturer.find(filter)
       .select(req.query.excludeFields ? `-${req.query.excludeFields}` : '-__v')
-      .sort(req.query.sortBy ? req.query.sortBy : 'name') // Default sort by 'name'
+      .sort(req.query.sortBy ? req.query.sortBy : 'name') 
       .skip(parseInt(req.query.skip) || 0)
       .limit(parseInt(req.query.limit) || 10);
 
