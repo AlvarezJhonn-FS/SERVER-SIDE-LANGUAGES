@@ -52,12 +52,29 @@ const getManufacturers = async (req, res) => {
     if (minCars) filter.carsCount = { $gte: parseInt(minCars) };
     if (maxCars) filter.carsCount = { ...filter.carsCount, $lte: parseInt(maxCars) };
     if (name) filter.name = { $regex: name, $options: 'i' };
+    let query = Manufacturer.find(filter);
 
-    const manufacturers = await Manufacturer.find(filter)
-      .select(req.query.excludeFields ? `-${req.query.excludeFields}` : '-__v')
-      .sort(req.query.sortBy ? req.query.sortBy : 'name') 
-      .skip(parseInt(req.query.skip) || 0)
-      .limit(parseInt(req.query.limit) || 10);
+
+    if (req.query.select) {
+      const fields = req.query.select.split(',').join(' ');
+      query = query.select(fields);
+    }
+
+
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join(' ');
+      query = query.sort(sortBy); 
+    }
+
+
+    const limit = parseInt(req.query.limit) || 10;  
+    const page = parseInt(req.query.page) || 1;  
+    const skip = (page - 1) * limit;  
+
+    query = query.skip(skip).limit(limit);
+
+ 
+    const manufacturers = await query;
 
     res.status(200).json({
       data: manufacturers,
