@@ -59,6 +59,8 @@ const getCar = async (req, res) => {
     const pages = parseInt(req.query.pages) || 1;
     const year = parseInt(req.query.year) || 1885;
 
+    const skip = (pages - 1) * limit;
+
     query = query.where('price').gte(price);
     query = query.limit(limit); 
     query = query.where('year').gte(year);
