@@ -78,9 +78,13 @@ const getCar = async (req, res) => {
       message: `${req.method} - Cars fetched successfully`
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };
+
+
+
 
 const putCar = async (req, res) => {
   try {
